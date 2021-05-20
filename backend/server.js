@@ -14,6 +14,9 @@ dotenv.config({ path: "./config/config.env" });
 // Connect to Database
 connectDB();
 
+// Route Files
+const auth = require("./routes/auth");
+
 // Initialising Express Constructor
 const app = express();
 
@@ -28,6 +31,11 @@ app.get("/", (req, res) => {
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
+
+// ================Mount routes=====================
+app.use("/api/v1/auth", auth);
+
+// =================================================
 
 // Error handler middleware (Should be after mounting routes as otherwise it will not be able to
 // errors otherwise)
