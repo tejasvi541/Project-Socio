@@ -103,4 +103,4 @@ UserSchema.methods.generateEmailConfirmToken = function (next) {
   return confirmTokenCombined;
 };
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("user", UserSchema);

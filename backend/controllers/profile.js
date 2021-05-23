@@ -3,9 +3,10 @@ const Profile = require("../models/Profile");
 const User = require("../models/User");
 const axios = require("axios");
 const asyncHandler = require("../middleware/async");
+const ErrorResponse = require("../utils/errorResponse");
 
 //==================================== GET Our Profile =========================//
-// @route       GET api/profile/me
+// @route       GET api/profile/myprofile
 // @desc        Get current user's profile
 // @access      Private
 
@@ -13,6 +14,10 @@ exports.getMyProfile = asyncHandler(async (req, res) => {
   const profile = await Profile.findOne({
     user: req.user.id,
   }).populate("user", ["first_name", "last_name", "bio"]);
+
+  if (!profile) {
+    return next(new ErrorResponse(`No Profile found `, 404));
+  }
 
   res.status(200).json({
     success: true,
@@ -87,6 +92,48 @@ exports.createProfile = asyncHandler(async (req, res) => {
   profile = new Profile(profileFields);
 
   await profile.save();
+
+  res.status(200).json({
+    success: true,
+    data: profile,
+  });
+});
+
+//==================================== Get all profiles =========================//
+// @route    GET api/profile
+// @desc     Get all profiles
+// @access   Public
+
+exports.getProfiles = asyncHandler(async (req, res) => {
+  const profiles = await Profile.find().populate("user", [
+    "first_name",
+    "last_name",
+    "bio",
+  ]);
+
+  if (!profiles) {
+    return next(new ErrorResponse(`No Profiles found `, 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    data: profiles,
+  });
+});
+
+//==================================== Get profile by user ID =========================//
+// @route    GET api/profile/:user_id
+// @desc     Get profile by user ID
+// @access   Public
+exports.getProfile = asyncHandler(async (req, res) => {
+  const profile = await Profile.findOne({
+    user: req.params.user_id,
+  }).populate("user", ["first_name", "last_name", "bio"]);
+
+  if (!profile)
+    return next(
+      new ErrorResponse(`No Profile found with id ${req.params.user_id}`, 404)
+    );
 
   res.status(200).json({
     success: true,
