@@ -51,7 +51,10 @@ exports.createProfile = asyncHandler(async (req, res) => {
   if (skills) profileFields.skills = skills;
 
   if (skills.length == 0) {
-    res.status(500).send("Add Skills");
+    res.status(500).json({
+      success: false,
+      data: "Please Add a Skill",
+    });
   }
 
   if (skills) {
