@@ -140,3 +140,54 @@ exports.getProfile = asyncHandler(async (req, res) => {
     data: profile,
   });
 });
+
+//==================================== Add Education Experience =========================//
+// @route    PUT api/profile/education
+// @desc     Add profile education
+// @access   Private
+
+exports.addEducation = asyncHandler(async (req, res) => {
+  const { school, degree, fieldofstudy, from, to, current, description } =
+    req.body;
+
+  const newEdu = {
+    school,
+    degree,
+    fieldofstudy,
+    from,
+    to,
+    current,
+    description,
+  };
+
+  const profile = await Profile.findOne({ user: req.user.id });
+  profile.education.unshift(newEdu);
+
+  await profile.save();
+  res.status(200).json({
+    success: true,
+    data: profile,
+  });
+});
+
+//==================================== Delete Profile Education =========================//
+// @route    DELETE api/profile/education/:edu_id
+// @desc     DELETE profile education
+// @access   Private
+
+exports.deleteEducation = asyncHandler(async (req, res) => {
+  const profile = await Profile.findOne({ user: req.user.id });
+
+  //get the remove index
+  const removeIndex = profile.education
+    .map((item) => item.id)
+    .indexOf(req.params.edu_id);
+
+  profile.education.splice(removeIndex, 1);
+
+  await profile.save();
+  res.status(200).json({
+    success: true,
+    data: profile,
+  });
+});
