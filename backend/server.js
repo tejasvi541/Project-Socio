@@ -17,6 +17,7 @@ connectDB();
 //============================ Route Files ===========================//
 const auth = require("./routes/auth");
 const profile = require("./routes/profile");
+const post = require("./routes/post");
 
 // Initialising Express Constructor
 const app = express();
@@ -36,6 +37,7 @@ if (process.env.NODE_ENV === "development") {
 // ================Mount routes=====================
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/profile", profile);
+app.use("/api/v1/posts", post);
 
 // =================================================
 

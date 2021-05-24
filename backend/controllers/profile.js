@@ -10,7 +10,7 @@ const ErrorResponse = require("../utils/errorResponse");
 // @desc        Get current user's profile
 // @access      Private
 
-exports.getMyProfile = asyncHandler(async (req, res) => {
+exports.getMyProfile = asyncHandler(async (req, res, next) => {
   const profile = await Profile.findOne({
     user: req.user.id,
   }).populate("user", ["first_name", "last_name", "bio"]);
@@ -30,7 +30,7 @@ exports.getMyProfile = asyncHandler(async (req, res) => {
 // @desc        Create or Update User Profile
 // @access      Private
 
-exports.createProfile = asyncHandler(async (req, res) => {
+exports.createProfile = asyncHandler(async (req, res, next) => {
   const {
     website,
     dob,
@@ -56,10 +56,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
   if (skills) profileFields.skills = skills;
 
   if (skills.length == 0) {
-    res.status(500).json({
-      success: false,
-      data: "Please Add a Skill",
-    });
+    return next(new ErrorResponse(`No Skills found `, 404));
   }
 
   if (skills) {
@@ -78,6 +75,10 @@ exports.createProfile = asyncHandler(async (req, res) => {
   if (twitter) profileFields.social.twitter = twitter;
 
   let profile = await Profile.findOne({ user: req.user.id });
+
+  if (!profile) {
+    return next(new ErrorResponse(`No Profile found `, 404));
+  }
 
   if (profile) {
     //update
@@ -104,7 +105,7 @@ exports.createProfile = asyncHandler(async (req, res) => {
 // @desc     Get all profiles
 // @access   Public
 
-exports.getProfiles = asyncHandler(async (req, res) => {
+exports.getProfiles = asyncHandler(async (req, res, next) => {
   const profiles = await Profile.find().populate("user", [
     "first_name",
     "last_name",
@@ -125,7 +126,7 @@ exports.getProfiles = asyncHandler(async (req, res) => {
 // @route    GET api/profile/:user_id
 // @desc     Get profile by user ID
 // @access   Public
-exports.getProfile = asyncHandler(async (req, res) => {
+exports.getProfile = asyncHandler(async (req, res, next) => {
   const profile = await Profile.findOne({
     user: req.params.user_id,
   }).populate("user", ["first_name", "last_name", "bio"]);
@@ -146,7 +147,7 @@ exports.getProfile = asyncHandler(async (req, res) => {
 // @desc     Add profile education
 // @access   Private
 
-exports.addEducation = asyncHandler(async (req, res) => {
+exports.addEducation = asyncHandler(async (req, res, next) => {
   const { school, degree, fieldofstudy, from, to, current, description } =
     req.body;
 
@@ -161,6 +162,10 @@ exports.addEducation = asyncHandler(async (req, res) => {
   };
 
   const profile = await Profile.findOne({ user: req.user.id });
+
+  if (!profile)
+    return next(new ErrorResponse(`No Profile found with this ID`, 404));
+
   profile.education.unshift(newEdu);
 
   await profile.save();
@@ -175,13 +180,19 @@ exports.addEducation = asyncHandler(async (req, res) => {
 // @desc     DELETE profile education
 // @access   Private
 
-exports.deleteEducation = asyncHandler(async (req, res) => {
+exports.deleteEducation = asyncHandler(async (req, res, next) => {
   const profile = await Profile.findOne({ user: req.user.id });
+
+  if (!profile)
+    return next(new ErrorResponse(`No Profile found with this ID`, 404));
 
   //get the remove index
   const removeIndex = profile.education
     .map((item) => item.id)
     .indexOf(req.params.edu_id);
+
+  if (removeIndex === -1)
+    return next(new ErrorResponse(`No Education found with this ID`, 404));
 
   profile.education.splice(removeIndex, 1);
 
