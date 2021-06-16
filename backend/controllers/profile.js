@@ -1,5 +1,7 @@
 const express = require("express");
 const Profile = require("../models/Profile");
+const Post = require("../models/Post");
+
 const User = require("../models/User");
 const axios = require("axios");
 const asyncHandler = require("../middleware/async");
@@ -77,7 +79,9 @@ exports.createProfile = asyncHandler(async (req, res, next) => {
   let profile = await Profile.findOne({ user: req.user.id });
 
   if (!profile) {
-    return next(new ErrorResponse(`No Profile found `, 404));
+    // Create
+    profile = new Profile(profileFields);
+    await profile.save();
   }
 
   if (profile) {
@@ -89,8 +93,6 @@ exports.createProfile = asyncHandler(async (req, res, next) => {
     );
     return res.json(profile);
   }
-  // Create
-  profile = new Profile(profileFields);
 
   await profile.save();
 

@@ -1,6 +1,7 @@
 const express = require("express");
 const Post = require("../models/Post");
 const User = require("../models/User");
+
 const axios = require("axios");
 const asyncHandler = require("../middleware/async");
 const ErrorResponse = require("../utils/errorResponse");
@@ -62,4 +63,44 @@ exports.getPosts = asyncHandler(async (req, res, next) => {
     success: true,
     data: posts,
   });
+});
+
+//==================================== GET Post by id Route =========================//
+// @route       GET api/posts/:id
+// @desc        Get Post by id
+// @access      Private
+
+exports.getPostById = asyncHandler(async (req, res, next) => {
+  const post = await Post.findById(req.params.id);
+
+  if (!post) {
+    return next(
+      new ErrorResponse(`No post Found with id : ${req.params.id}`, 404)
+    );
+  }
+  res.status(200).json({
+    success: true,
+    data: post,
+  });
+});
+
+//==================================== Delete Post by id Route =========================//
+// @route       DELETE api/posts/:id
+// @desc        Delete Post by id
+// @access      Private
+
+exports.deletePost = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id);
+
+  if (!post) {
+    return next(new ErrorResponse("Post not found", 404));
+  }
+
+  //Check user
+  if (post.user.toString() !== req.user.id) {
+    return res.status(401).json({ msg: "User not Authorized" });
+  }
+  await post.remove();
+
+  res.json({ msg: "Post Removed" });
 });
