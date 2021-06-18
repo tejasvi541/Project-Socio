@@ -8,6 +8,7 @@ const ErrorResponse = require("../utils/errorResponse");
 const Jimp = require("jimp");
 const path = require("path");
 const fs = require("fs");
+const ObjectId = require("mongoose").Types.ObjectId;
 
 //==================================== Create Post Route =========================//
 // @route       POST api/posts
@@ -84,6 +85,28 @@ exports.getPostById = asyncHandler(async (req, res, next) => {
   });
 });
 
+//==================================== GET Post by user_id Route =========================//
+// @route       GET api/posts/user/:user_id
+// @desc        Get User Post by id
+// @access      Private
+
+exports.getUserPostsById = asyncHandler(async (req, res, next) => {
+  const posts = await Post.find({ user: req.params.user_id });
+
+  if (!result) {
+    return next(
+      new ErrorResponse(
+        `No post Found with user_id : ${req.params.user_id}`,
+        404
+      )
+    );
+  }
+  res.status(200).json({
+    success: true,
+    data: posts,
+  });
+});
+
 //==================================== Delete Post by id Route =========================//
 // @route       DELETE api/posts/:id
 // @desc        Delete Post by id
@@ -103,4 +126,49 @@ exports.deletePost = asyncHandler(async (req, res) => {
   await post.remove();
 
   res.json({ msg: "Post Removed" });
+});
+
+//==================================== Like Post by id Route =========================//
+// @route       PUT api/posts/like/:id
+// @desc        Like a Post
+// @access      Private
+exports.likePost = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id);
+
+  // Check if the post has already been liked
+  if (post.likes.some((like) => like.user.toString() === req.user.id)) {
+    return next(new ErrorResponse("Post Already Liked"), 400);
+  }
+  post.likes.unshift({ user: req.user.id });
+
+  await post.save();
+
+  return res.status(200).json({
+    success: true,
+    data: post.likes,
+  });
+});
+
+//==================================== Unlike Post by id Route =========================//
+
+// @route    PUT api/posts/unlike/:id
+// @desc     Unlike a post
+// @access   Private
+exports.unLikePost = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id);
+
+  // Check if the post has not yet been liked
+  if (!post.likes.some((like) => like.user.toString() === req.user.id)) {
+    return next(new ErrorResponse("Post Hasn't been Liked Yet"), 400);
+  }
+
+  // remove the like
+  post.likes = post.likes.filter(({ user }) => user.toString() !== req.user.id);
+
+  await post.save();
+
+  return res.status(200).json({
+    success: true,
+    data: post.likes,
+  });
 });

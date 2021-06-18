@@ -1,7 +1,6 @@
 const express = require("express");
 const Profile = require("../models/Profile");
 const Post = require("../models/Post");
-
 const User = require("../models/User");
 const axios = require("axios");
 const asyncHandler = require("../middleware/async");
