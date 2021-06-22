@@ -172,3 +172,78 @@ exports.unLikePost = asyncHandler(async (req, res) => {
     data: post.likes,
   });
 });
+
+//==================================== Add a comment to Post by id Route =========================//
+// @route    POST api/posts/comment/:id
+// @desc     Comment on a post
+// @access   Private
+
+exports.comment = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id).select("-password");
+  const post = await Post.findById(req.params.id);
+
+  if (!user) {
+    return next(new ErrorResponse("No user found with id " + req.user.id, 400));
+  }
+
+  if (!post) {
+    return next(
+      new ErrorResponse("No user Post with id " + req.params.id, 400)
+    );
+  }
+
+  const newComment = {
+    text: req.body.text,
+    first_name: user.first_name,
+    last_name: user.last_name,
+    user: req.user.id,
+  };
+  post.comments.unshift(newComment);
+
+  await post.save();
+
+  return res.status(200).json({
+    success: true,
+    data: post.comments,
+  });
+});
+
+//==================================== Delete a comment to Post by id Route =========================//
+// @route    DELETE api/posts/comment/:id/:comment_id
+// @desc     Delete comment
+// @access   Private
+exports.unComment = asyncHandler(async (req, res) => {
+  const post = await Post.findById(req.params.id);
+
+  if (!post) {
+    return next(
+      new ErrorResponse("No user Post with id " + req.params.id, 400)
+    );
+  }
+
+  // Pull out comment
+  const comment = post.comments.find(
+    (comment) => comment.id === req.params.comment_id
+  );
+  // Make sure comment exists
+  if (!comment) {
+    return next(
+      new ErrorResponse("No user Comment with id " + req.params.comment_id, 404)
+    );
+  }
+  // Check user
+  if (comment.user.toString() !== req.user.id) {
+    return res.status(401).json({ msg: "User not authorized" });
+  }
+
+  post.comments = post.comments.filter(
+    ({ id }) => id !== req.params.comment_id
+  );
+
+  await post.save();
+
+  return res.status(200).json({
+    success: true,
+    data: post.comments,
+  });
+});
