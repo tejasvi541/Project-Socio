@@ -1,58 +1,61 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core';
-import Button from '../../Button/Button';
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/core";
+import Button from "../../Button/Button";
 
 const useStyles = makeStyles(() => ({
   root: {
-    margin: '1rem',
-    width: '50%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    margin: "1rem",
+    width: "50%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   text: {
-    width: '100%',
-    fontFamily: 'Droid Sans',
-    fontWeight: 'Regular',
+    width: "100%",
+    fontFamily: "Droid Sans",
+    fontWeight: "Regular",
     fontSize: 13,
-    textAlign: 'center',
+    textAlign: "center",
   },
   input: {
-    fontFamily: 'Droid Sans',
+    fontFamily: "Droid Sans",
     fontSize: 12,
-    textAlign: 'center',
-    width: '80%',
+    textAlign: "center",
+    width: "80%",
     marginTop: 6,
     marginBottom: 6,
-    height: '30px',
-    borderStyle: 'none',
-    borderRadius: '16px',
-    backgroundColor: 'rgba(23, 37, 42, 1)',
-    color: 'white',
-    '&:focus': {
-      outline: 'none',
+    height: "30px",
+    borderStyle: "none",
+    borderRadius: "16px",
+    backgroundColor: "rgba(23, 37, 42, 1)",
+    color: "white",
+    "&:focus": {
+      outline: "none",
+    },
+    ["@media(max-Width: 480px)"]: {
+      width: "110%",
     },
   },
   text_forget_pass: {
     margin: 0,
-    marginTop: '0.5rem',
-    marginBottom: '0.5rem',
-    width: '100%',
-    fontFamily: 'Droid Sans',
-    fontWeight: 'regular',
+    marginTop: "0.5rem",
+    marginBottom: "0.5rem",
+    width: "100%",
+    fontFamily: "Droid Sans",
+    fontWeight: "regular",
     fontSize: 11,
-    textAlign: 'center',
-    '&:hover': {
-      cursor: 'pointer',
-      color: '#334443',
+    textAlign: "center",
+    "&:hover": {
+      cursor: "pointer",
+      color: "#334443",
     },
   },
 }));
 
 function LeftLoginSubCard() {
   const classes = useStyles();
-  const [username, setusername] = useState('');
-  const [password, setpassword] = useState('');
+  const [username, setusername] = useState("");
+  const [password, setpassword] = useState("");
 
   const ButtonClickHandler = () => {
     console.log(username + password);
@@ -78,7 +81,8 @@ function LeftLoginSubCard() {
       <Button
         margintop={4}
         ButtonClickHandler={ButtonClickHandler}
-        text="login"
+        fontWeight={700}
+        text="Login"
       />
       <h4 className={classes.text_forget_pass}>New User ? Sign Up Now</h4>
     </div>

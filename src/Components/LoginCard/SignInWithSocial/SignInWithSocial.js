@@ -1,24 +1,24 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core';
-import Button from '../../Button/Button';
-import GoogleIcon from './../../../assets/icons/google-icon.svg';
-import LinkdinIcon from './../../../assets/icons/linkedin-icon.svg';
-import GitHubIconNew from './../../../assets/icons/github-white.svg';
+import React from "react";
+import { makeStyles } from "@material-ui/core";
+import Button from "../../Button/Button";
+import GoogleIcon from "./../../../assets/icons/google-icon.svg";
+import LinkdinIcon from "./../../../assets/icons/linkedin-icon.svg";
+import GitHubIconNew from "./../../../assets/icons/github-white.svg";
 
 const useStyles = makeStyles(() => ({
   root: {
-    margin: '1rem',
-    width: '50%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    margin: "1rem",
+    width: "50%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
   text: {
-    width: '100%',
-    fontFamily: 'Droid Sans',
-    fontWeight: 'Regular',
+    width: "100%",
+    fontFamily: "Droid Sans",
+    fontWeight: "Regular",
     fontSize: 13,
-    textAlign: 'center',
+    textAlign: "center",
   },
 }));
 
@@ -26,15 +26,15 @@ function SignInWithSocial() {
   const classes = useStyles();
 
   const GithubClikced = () => {
-    console.log('Github Clicked !');
+    console.log("Github Clicked !");
   };
 
   const GoogleClikced = () => {
-    console.log('Google Clicked !');
+    console.log("Google Clicked !");
   };
 
   const LinkdinClikced = () => {
-    console.log('Linkdin Clicked !');
+    console.log("Linkdin Clicked !");
   };
 
   return (
@@ -44,7 +44,10 @@ function SignInWithSocial() {
         image
         imageurl={GitHubIconNew}
         width="80%"
+        height={30}
         margintop={16}
+        fontSize={13}
+        fontWeight={500}
         text="Github"
         ButtonClickHandler={GithubClikced}
       />
@@ -52,7 +55,10 @@ function SignInWithSocial() {
         image
         imageurl={GoogleIcon}
         width="80%"
+        height={30}
         margintop={16}
+        fontSize={13}
+        fontWeight={500}
         text="Google"
         ButtonClickHandler={GoogleClikced}
       />
@@ -61,6 +67,9 @@ function SignInWithSocial() {
         imageurl={LinkdinIcon}
         width="80%"
         margintop={16}
+        height={30}
+        fontSize={13}
+        fontWeight={500}
         text="Linkdin"
         ButtonClickHandler={LinkdinClikced}
       />
