@@ -64,7 +64,7 @@ function RegisterCard() {
   };
   return (
     <div className={classes.root}>
-      <h4 className={classes.text}>Sign In Here</h4>
+      <h4 className={classes.text}>Sign Up Here</h4>
       <input
         type="text"
         className={classes.input}

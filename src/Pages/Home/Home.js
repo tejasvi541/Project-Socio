@@ -7,11 +7,12 @@ const useStyles = makeStyles(() => ({
   root: {},
 }));
 
-function Home() {
+function Home(props) {
+  console.log(props);
   const classes = useStyles();
   return (
     <div>
-      <Login />
+      <Login in={props.in} up={props.up} />
       <Footer />
     </div>
   );
