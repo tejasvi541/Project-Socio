@@ -45,7 +45,6 @@ function LoginCard() {
         <LeftLoginSubCard />
         <SignInWithSocial />
       </div>
-      {/* <RegisterCard /> */}
     </div>
   );
 }
