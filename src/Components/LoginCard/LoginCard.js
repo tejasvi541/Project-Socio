@@ -15,6 +15,7 @@ const useStyles = makeStyles(() => ({
     borderRadius: "18px",
     boxShadow: "rgba(0, 0, 0, 0.18) 0px 2px 4px",
     display: "flex",
+    justifyContent: "center",
     flexDirection: "row",
     ["@media(max-Width: 480px)"]: {
       width: "250px",
@@ -24,7 +25,10 @@ const useStyles = makeStyles(() => ({
   wrapper: {
     display: "flex",
     flexDirection: "row",
+
+    alignItems: "",
     ["@media(max-Width: 480px)"]: {
+      position: "center",
       flexDirection: "column",
       width: "414px",
       height: "400px",
@@ -41,6 +45,7 @@ function LoginCard() {
         <LeftLoginSubCard />
         <SignInWithSocial />
       </div>
+      {/* <RegisterCard /> */}
     </div>
   );
 }

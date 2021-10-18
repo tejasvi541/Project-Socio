@@ -7,7 +7,7 @@ import GitHubIconNew from "./../../../assets/icons/github-white.svg";
 
 const useStyles = makeStyles(() => ({
   root: {
-    margin: "1rem",
+    margin: "1.5rem",
     width: "50%",
     display: "flex",
     flexDirection: "column",

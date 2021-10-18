@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
-import Button from "../../Button/Button";
+import Button from "../Button/Button.js";
 
 const useStyles = makeStyles(() => ({
   root: {
-    margin: "1.5rem",
+    margin: "1rem",
     width: "50%",
     display: "flex",
     flexDirection: "column",
@@ -21,7 +21,7 @@ const useStyles = makeStyles(() => ({
     fontFamily: "Droid Sans",
     fontSize: 12,
     textAlign: "center",
-    width: "90%",
+    width: "130%",
     marginTop: 6,
     marginBottom: 6,
     height: "30px",
@@ -52,13 +52,15 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-function LeftLoginSubCard() {
+function RegisterCard() {
   const classes = useStyles();
   const [username, setusername] = useState("");
+  const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
+  const [confirmpassword, setconfirmpassword] = useState("");
 
   const ButtonClickHandler = () => {
-    console.log(username + password);
+    console.log(username + password + email + confirmpassword);
   };
   return (
     <div className={classes.root}>
@@ -66,9 +68,16 @@ function LeftLoginSubCard() {
       <input
         type="text"
         className={classes.input}
-        placeholder="Username or Email Id"
+        placeholder="Username"
         value={username}
         onChange={(e) => setusername(e.target.value)}
+      ></input>
+      <input
+        type="text"
+        className={classes.input}
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setemail(e.target.value)}
       ></input>
       <input
         type="password"
@@ -77,16 +86,22 @@ function LeftLoginSubCard() {
         value={password}
         onChange={(e) => setpassword(e.target.value)}
       ></input>
-      <h4 className={classes.text_forget_pass}>Forget Password</h4>
+      <input
+        type="password"
+        className={classes.input}
+        placeholder="Confirm Password"
+        value={confirmpassword}
+        onChange={(e) => setconfirmpassword(e.target.value)}
+      ></input>
       <Button
         margintop={4}
         ButtonClickHandler={ButtonClickHandler}
         fontWeight={700}
-        text="Login"
+        text="Register"
       />
-      <h4 className={classes.text_forget_pass}>New User ? Sign Up Now</h4>
+      <h4 className={classes.text_forget_pass}>Already a User ? Sign In</h4>
     </div>
   );
 }
 
-export default LeftLoginSubCard;
+export default RegisterCard;
