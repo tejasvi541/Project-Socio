@@ -6,6 +6,7 @@ const useStyles = makeStyles((props) => ({
     marginTop: (props) => props.margintop,
     padding: 1,
     margin: 2,
+
     width: (props) => (props.width ? props.width : "125px"),
     height: (props) => (props.height ? props.height : "28px"),
     fontWeight: "700",
@@ -14,7 +15,7 @@ const useStyles = makeStyles((props) => ({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
-    backgroundColor: "rgba(23, 37, 42, 1)",
+    backgroundColor: "#05386b",
     "&:hover": {
       cursor: "pointer",
       boxShadow: "rgba(0, 0, 0, 0.18) 0px 2px 4px",
