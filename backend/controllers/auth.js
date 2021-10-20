@@ -11,12 +11,11 @@ const sendEmail = require("../utils/sendMail");
 // @access      Public
 
 exports.register = asyncHandler(async (req, res, next) => {
-  const { first_name, last_name, email, password, role } = req.body;
+  const { username, email, password, role } = req.body;
 
   // Create user
   const user = await User.create({
-    first_name,
-    last_name,
+    username,
     email,
     password,
     role,
@@ -113,8 +112,8 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 // @access    Private
 exports.updateDetails = asyncHandler(async (req, res, next) => {
   const fieldsToUpdate = {
-    first_name: req.body.first_name,
-    last_name: req.body.last_name,
+    username: req.body.username,
+
     email: req.body.email,
   };
 
